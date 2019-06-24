@@ -2,7 +2,7 @@
   "name": "FlashCodeHighlighter",
   "author": "Shu NARIGASAWA",
   "description": "```で囲われた中身をハイライト表示します。",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
   "content_scripts": [
     {
