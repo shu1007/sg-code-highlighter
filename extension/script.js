@@ -45,20 +45,24 @@ let prettyPrint = function() {
   PR.prettyPrint();
 };
 
+let talkAreaObserver = new MutationObserver(prettyPrint);
+let observeTalkArea = function() {
+  talkAreaObserver.observe(document.getElementById("talkArea"), {
+    childList: true
+  });
+};
+
 // content_panelを監視
 new MutationObserver(() => {
-  // talkAreaを監視
-  new MutationObserver(prettyPrint).observe(
-    document.getElementById("talkArea"),
-    {
-      childList: true
-    }
-  );
+  talkAreaObserver.disconnect();
+  talkAreaObserver = new MutationObserver(prettyPrint);
 
   prettyPrint();
+  observeTalkArea();
 }).observe(document.getElementById("content_panel"), {
   attributes: true
 });
 
 //初期ロード時に実行
 prettyPrint();
+observeTalkArea();
