@@ -63,6 +63,13 @@ new MutationObserver(() => {
   attributes: true
 });
 
+// metaKey + enterで送信可能にする
+document.getElementById("message").addEventListener("keydown", event => {
+  if (event.metaKey && event.keyCode == 13) {
+    document.getElementsByClassName("mid-button")[0].click();
+  }
+});
+
 //初期ロード時に実行
 prettyPrint();
 observeTalkArea();
