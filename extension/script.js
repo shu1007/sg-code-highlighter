@@ -1,7 +1,7 @@
 let appendPre = (chat, classes, text) => {
   let pre = document.createElement("pre");
   pre.setAttribute(CLASS_ATTRIBUTE, classes.join(" "));
-  pre.textContent = text;
+  pre.innerHTML = text;
   chat.append(pre);
 };
 
@@ -16,19 +16,22 @@ let prettyPrint = () => {
         [CHAT_CLASS_NAME, CHECKED_CLASS_NAME].join(" ")
       );
 
+      let innerHTML = chat.innerHTML.match(
+        /<pre class=\"message\"\>(.*)\<\/pre>/s
+      )[1];
+      if (innerHTML === "") return;
+
+      chat.innerHTML = "";
       let index = 0;
       let regArray;
-      let innerText = chat.innerText;
-      chat.innerHTML = "";
-
-      while ((regArray = regex.exec(innerText)) !== null) {
+      while ((regArray = regex.exec(innerHTML)) !== null) {
         let startIndex = regArray.index;
         if (index <= startIndex - 1) {
           //通常テキスト処理
           appendPre(
             chat,
             [MESSAGE_CLASS_NAME],
-            innerText.substring(index, startIndex)
+            innerHTML.substring(index, startIndex)
           );
         }
         let foundStr = regArray[0];
@@ -45,12 +48,12 @@ let prettyPrint = () => {
         index = regex.lastIndex;
       }
 
-      let textLength = innerText.length;
+      let textLength = innerHTML.length;
       if (index < textLength - 1) {
         appendPre(
           chat,
           [MESSAGE_CLASS_NAME],
-          innerText.substring(index, textLength)
+          innerHTML.substring(index, textLength)
         );
       }
     });
