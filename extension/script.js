@@ -21,10 +21,14 @@ let prettyPrint = () => {
       )[1];
       if (innerHTML === "") return;
 
-      chat.innerHTML = "";
       let index = 0;
       let regArray;
+      let codeFound = false;
       while ((regArray = regex.exec(innerHTML)) !== null) {
+        if (!codeFound) {
+          codeFound = true;
+          chat.innerHTML = "";
+        }
         let startIndex = regArray.index;
         if (index <= startIndex - 1) {
           //通常テキスト処理
@@ -47,6 +51,8 @@ let prettyPrint = () => {
         appendPre(chat, classes, foundStr.match(/\`\`\`.*?\n(.+?)\`\`\`/s)[1]);
         index = regex.lastIndex;
       }
+
+      if (!codeFound) return;
 
       let textLength = innerHTML.length;
       if (index < textLength - 1) {
