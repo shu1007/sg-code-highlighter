@@ -77,19 +77,20 @@ let addSendMessageEvent = () => {
   });
 };
 
+let exec = () => {
+  prettyPrint();
+  observeTalkArea();
+  addSendMessageEvent();
+};
+
 // content_panelを監視
 new MutationObserver(() => {
   talkAreaObserver.disconnect();
   talkAreaObserver = new MutationObserver(prettyPrint);
-
-  prettyPrint();
-  observeTalkArea();
-  addSendMessageEvent();
+  exec();
 }).observe(document.getElementById("content_panel"), {
   attributes: true
 });
 
 //初期ロード時に実行
-prettyPrint();
-observeTalkArea();
-addSendMessageEvent();
+exec();
