@@ -42,7 +42,6 @@ const LANG_SET = new Set([
 
 const getHilightHtml = (code, lang) => {
     const useLang = lang == null || !LANG_SET.has(lang) ? "clike" : lang;
-    console.log(useLang);
     return `<div class="code">${Prism.highlight(
         code,
         Prism.languages[useLang],
@@ -57,7 +56,6 @@ const getHtml = (original) => {
     let codeFound = false;
     const strings = [];
     while ((regArray = regex.exec(original)) !== null) {
-        console.log("found");
         codeFound = true;
         const startIndex = regArray.index;
         if (index <= startIndex - 1) {
@@ -78,7 +76,6 @@ const getHtml = (original) => {
     if (index < textLength - 1) {
         strings.push(original.substring(index, textLength));
     }
-    console.log(`strings: ${strings}`);
     return strings.join("");
 };
 
@@ -112,7 +109,6 @@ const init = () => {
     execAfterCreateElement(
         (list) => {
             const changeMessages = () => {
-                console.log("change");
                 list.$children
                     .filter(
                         (c) =>
