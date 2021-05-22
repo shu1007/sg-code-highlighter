@@ -1,56 +1,22 @@
 {
-  "name": "FlashCodeHighlighter",
-  "author": "Shu NARIGASAWA",
-  "description": "```で囲われた中身をハイライト表示します。",
-  "version": "0.1.0",
-  "manifest_version": 2,
-  "content_scripts": [
-    {
-      "matches": ["https://flash.do/*"],
-      "css": ["google-code-prettify/skins/desert.css", "custom.css"],
-      "js": [
-        "google-code-prettify/prettify.js",
-        "google-code-prettify/lang-aea.js",
-        "google-code-prettify/lang-basic.js",
-        "google-code-prettify/lang-clj.js",
-        "google-code-prettify/lang-css.js",
-        "google-code-prettify/lang-dart.js",
-        "google-code-prettify/lang-erl.js",
-        "google-code-prettify/lang-ex.js",
-        "google-code-prettify/lang-fs.js",
-        "google-code-prettify/lang-go.js",
-        "google-code-prettify/lang-hs.js",
-        "google-code-prettify/lang-kotlin.js",
-        "google-code-prettify/lang-lasso.js",
-        "google-code-prettify/lang-lgt.js",
-        "google-code-prettify/lang-lisp.js",
-        "google-code-prettify/lang-ll.js",
-        "google-code-prettify/lang-lua.js",
-        "google-code-prettify/lang-matlab.js",
-        "google-code-prettify/lang-mumps.js",
-        "google-code-prettify/lang-n.js",
-        "google-code-prettify/lang-pascal.js",
-        "google-code-prettify/lang-proto.js",
-        "google-code-prettify/lang-r.js",
-        "google-code-prettify/lang-rd.js",
-        "google-code-prettify/lang-rust.js",
-        "google-code-prettify/lang-scala.js",
-        "google-code-prettify/lang-sql.js",
-        "google-code-prettify/lang-swift.js",
-        "google-code-prettify/lang-tcl.js",
-        "google-code-prettify/lang-tex.js",
-        "google-code-prettify/lang-vb.js",
-        "google-code-prettify/lang-vhd.js",
-        "google-code-prettify/lang-wiki.js",
-        "google-code-prettify/lang-xq.js",
-        "google-code-prettify/lang-yaml.js",
-        "const.js",
-        "script.js"
-      ]
-    }
-  ],
-  "icons": {
-    "16": "icons/icon_16.png",
-    "128": "icons/icon_128.png"
-  }
+    "name": "SemanticGraphCodeHighlighter",
+    "author": "Shu NARIGASAWA",
+    "description": "```で囲われた中身をハイライト表示します。",
+    "version": "0.1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": ["https://ip.limgraph.jp/semantic-graph/*"],
+            "css": ["prism.css", "custom.css"],
+            "js": ["script.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["inject.js", "prism.js"],
+            "matches": ["https://*/*"],
+            "extension_ids": []
+        }
+    ]
 }
