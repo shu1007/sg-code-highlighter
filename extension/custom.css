@@ -1,21 +1,7 @@
-pre.prettyprint {
-    margin-right: 11%;
-}
-.prettyprint ol.linenums * {
-    font-family: Monaco, Menlo, Consolas, "Courier New", Courier, monospace,
-        sans-serif !important;
-}
-.prettyprint ol.linenums > li {
-    list-style-type: decimal;
-    /* 区切り線つける場合は以下のコメントを外す*/
-    /* border-left: solid 2px #476d5ab6; */
-    margin-left: 48px;
-    padding-left: 4px;
-}
-
 .code {
     background-color: #f5f2f0;
     font-family: Monaco, Menlo, Consolas, "Courier New", Courier, monospace,
         sans-serif !important;
-    padding: 5px 1px 5px 5px;
+    padding: 5px 0px 5px 7px;
+    border-radius: 5px;
 }
