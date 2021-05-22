@@ -82,11 +82,35 @@ const getHtml = (original) => {
     return strings.join("");
 };
 
+const execAfterCreateElement = (callback, getElement) => {
+    const exec = () => {
+        const element = getElement();
+        if (element != null) {
+            clearInterval(checkInterval);
+            callback(element);
+        }
+    };
+
+    const checkInterval = setInterval(exec, 100);
+};
+
+const initTextAreaAction = () => {
+    const textarea = document.getElementsByTagName("textarea")[0];
+    if (!textarea.classList.contains("added-func")) {
+        textarea.addEventListener("keydown", (event) => {
+            if ((event.metaKey || event.ctrlKey) && event.keyCode === 13) {
+                document
+                    .getElementsByClassName("my-auto elevation-0 pr-1 v-btn")[0]
+                    .click();
+            }
+        });
+        textarea.classList.add("added-func");
+    }
+};
+
 const init = () => {
-    const cb = () => {
-        let list = document.querySelector("#message-list .v-list").__vue__;
-        if (list != null) {
-            clearInterval(waitProcess);
+    execAfterCreateElement(
+        (list) => {
             const changeMessages = () => {
                 console.log("change");
                 list.$children
@@ -106,24 +130,10 @@ const init = () => {
             };
             list.$options.updated = [changeMessages];
             changeMessages();
-            document
-                .getElementsByTagName("textarea")[0]
-                .addEventListener("keydown", (event) => {
-                    if (
-                        (event.metaKey || event.ctrlKey) &&
-                        event.keyCode === 13
-                    ) {
-                        document
-                            .getElementsByClassName(
-                                "my-auto elevation-0 pr-1 v-btn"
-                            )[0]
-                            .click();
-                    }
-                });
-        }
-    };
-
-    const waitProcess = setInterval(cb, 200);
+            initTextAreaAction();
+        },
+        () => document.querySelector("#message-list .v-list").__vue__
+    );
 };
 
 const app = document.getElementById("app").__vue__;
