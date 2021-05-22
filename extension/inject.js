@@ -106,6 +106,20 @@ const init = () => {
             };
             list.$options.updated = [changeMessages];
             changeMessages();
+            document
+                .getElementsByTagName("textarea")[0]
+                .addEventListener("keydown", (event) => {
+                    if (
+                        (event.metaKey || event.ctrlKey) &&
+                        event.keyCode === 13
+                    ) {
+                        document
+                            .getElementsByClassName(
+                                "my-auto elevation-0 pr-1 v-btn"
+                            )[0]
+                            .click();
+                    }
+                });
         }
     };
 
