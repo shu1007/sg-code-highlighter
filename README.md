@@ -39,6 +39,7 @@ SELECT
 -   js
 -   jsx
 -   markup
+-   markdown
 -   mathml
 -   perl
 -   plain

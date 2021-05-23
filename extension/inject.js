@@ -41,10 +41,21 @@ const LANG_SET = new Set([
     "yml"
 ]);
 
+const patterns = {
+    "&lt;": "<",
+    "&gt;": ">",
+    "&amp;": "&",
+    "&quot;": '"',
+    "&#x27;": "'",
+    "&#x60;": "`"
+};
 const getHilightHtml = (code, lang) => {
     const useLang = lang == null || !LANG_SET.has(lang) ? "clike" : lang;
+
     return `<div class="code">${Prism.highlight(
-        code,
+        code.replace(/&(lt|gt|amp|quot|#x27|#x60);/g, function (match) {
+            return patterns[match];
+        }),
         Prism.languages[useLang],
         useLang
     )}</div>`;
