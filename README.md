@@ -21,44 +21,8 @@ SELECT
 
 ### 対応言語
 
--   atom
--   bash
--   clike
--   css
--   csv
--   diff
--   docker
--   dockerfile
--   extend
--   go
--   groovy
--   html
--   insertBefore
--   javadoclike
--   javascript
--   js
--   jsx
--   markup
--   markdown
--   mathml
--   perl
--   plain
--   plaintext
--   rss
--   sass
--   scss
--   shell
--   sql
--   ssml
--   svg
--   text, txt
--   toml
--   ts
--   tsx
--   typescript
--   vim
--   xml
--   yaml, yml
+シンタックスハイライトするのに使っている Prism.js で対応している言語がすべていけます。以下を参考にしてください。  
+[Prism.js の対応言語一覧](https://prismjs.com/index.html#supported-languages)
 
 ## MetaKey + Enter で投稿
 

@@ -1,46 +1,3 @@
-const LANG_SET = new Set([
-    "atom",
-    "bash",
-    "clike",
-    "css",
-    "csv",
-    "diff",
-    "docker",
-    "dockerfile",
-    "extend",
-    "go",
-    "groovy",
-    "html",
-    "insertBefore",
-    "javadoclike",
-    "javascript",
-    "js",
-    "jsx",
-    "markup",
-    "markdown",
-    "mathml",
-    "perl",
-    "plain",
-    "plaintext",
-    "rss",
-    "sass",
-    "scss",
-    "shell",
-    "sql",
-    "ssml",
-    "svg",
-    "text",
-    "toml",
-    "ts",
-    "tsx",
-    "txt",
-    "typescript",
-    "vim",
-    "xml",
-    "yaml",
-    "yml"
-]);
-
 const patterns = {
     "&lt;": "<",
     "&gt;": ">",
@@ -49,8 +6,10 @@ const patterns = {
     "&#x27;": "'",
     "&#x60;": "`"
 };
+
 const getHilightHtml = (code, lang) => {
-    const useLang = lang == null || !LANG_SET.has(lang) ? "clike" : lang;
+    const useLang =
+        lang == null || Prism.languages[lang] == null ? "clike" : lang;
 
     return `<div class="code">${Prism.highlight(
         code.replace(/&(lt|gt|amp|quot|#x27|#x60);/g, function (match) {
@@ -139,7 +98,6 @@ const init = () => {
             };
             vue.$options.updated = [changeMessages];
             vue.$options.destroyed.push(() => {
-                console.log("d");
                 execInit(document.getElementById("app").__vue__);
             });
 
