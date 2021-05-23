@@ -17,6 +17,7 @@ const LANG_SET = new Set([
     "js",
     "jsx",
     "markup",
+    "markdown",
     "mathml",
     "perl",
     "plain",
