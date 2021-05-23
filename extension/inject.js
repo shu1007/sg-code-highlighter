@@ -117,50 +117,53 @@ const initTextAreaAction = () => {
     }
 };
 
-const init = (getElement) => {
-    execAfterCreateElement((list) => {
-        const vue = list.__vue__;
-        const changeMessages = () => {
-            vue.$children
-                .filter(
-                    (c) => c.$options._componentTag == "message" && !c.checked
-                )
-                .forEach((c) => {
-                    c.checked = true;
-                    const h = c.$children[0].$children.find(
-                        (y) => y.$options._componentTag == "HighlightText"
-                    );
-                    if (h) {
-                        h.$el.innerHTML = getHtml(h.$el.innerHTML);
-                    }
-                });
-        };
-        vue.$options.updated = [changeMessages];
-        changeMessages();
-        initTextAreaAction();
-    }, getElement);
+const init = () => {
+    execAfterCreateElement(
+        (list) => {
+            const vue = list.__vue__;
+            const changeMessages = () => {
+                vue.$children
+                    .filter(
+                        (c) =>
+                            c.$options._componentTag == "message" && !c.checked
+                    )
+                    .forEach((c) => {
+                        c.checked = true;
+                        const h = c.$children[0].$children.find(
+                            (y) => y.$options._componentTag == "HighlightText"
+                        );
+                        if (h) {
+                            h.$el.innerHTML = getHtml(h.$el.innerHTML);
+                        }
+                    });
+            };
+            vue.$options.updated = [changeMessages];
+            vue.$options.destroyed.push(() => {
+                console.log("d");
+                execInit(document.getElementById("app").__vue__);
+            });
+
+            changeMessages();
+            initTextAreaAction();
+        },
+        () => document.querySelector("#message-list .v-list")
+    );
+};
+
+const execInit = (vue) => {
+    if (
+        vue.$root._route.path.endsWith("chat") ||
+        vue.$root._route.path.endsWith("new")
+    ) {
+        init();
+    }
 };
 
 execAfterCreateElement(
     (app) => {
         const vue = app.__vue__;
-        vue.$options.updated = [
-            () => {
-                if (
-                    vue.$root._route.path.endsWith("chat") ||
-                    vue.$root._route.path.endsWith("new")
-                ) {
-                    init(() => document.querySelector("#message-list .v-list"));
-                }
-            }
-        ];
-
-        if (
-            vue.$root._route.path.endsWith("chat") ||
-            vue.$root._route.path.endsWith("new")
-        ) {
-            init(() => document.querySelector("#message-list .v-list"));
-        }
+        vue.$options.updated = [() => execInit(vue)];
+        execInit(vue);
     },
     () => document.getElementById("app")
 );
