@@ -100,12 +100,12 @@ const execAfterCreateElement = (callback, getElement) => {
         }
     };
 
-    const checkInterval = setInterval(exec, 100);
+    const checkInterval = setInterval(exec, 50);
 };
 
 const initTextAreaAction = () => {
     const textarea = document.getElementsByTagName("textarea")[0];
-    if (!textarea.classList.contains("added-func")) {
+    if (textarea && !textarea.classList.contains("added-func")) {
         textarea.addEventListener("keydown", (event) => {
             if ((event.metaKey || event.ctrlKey) && event.keyCode === 13) {
                 document
@@ -117,42 +117,50 @@ const initTextAreaAction = () => {
     }
 };
 
-const init = () => {
-    execAfterCreateElement(
-        (list) => {
-            const changeMessages = () => {
-                list.$children
-                    .filter(
-                        (c) =>
-                            c.$options._componentTag == "message" && !c.checked
-                    )
-                    .forEach((c) => {
-                        c.checked = true;
-                        const h = c.$children[0].$children.find(
-                            (y) => y.$options._componentTag == "HighlightText"
-                        );
-                        if (h) {
-                            h.$el.innerHTML = getHtml(h.$el.innerHTML);
-                        }
-                    });
-            };
-            list.$options.updated = [changeMessages];
-            changeMessages();
-            initTextAreaAction();
-        },
-        () => document.querySelector("#message-list .v-list").__vue__
-    );
+const init = (getElement) => {
+    execAfterCreateElement((list) => {
+        const vue = list.__vue__;
+        const changeMessages = () => {
+            vue.$children
+                .filter(
+                    (c) => c.$options._componentTag == "message" && !c.checked
+                )
+                .forEach((c) => {
+                    c.checked = true;
+                    const h = c.$children[0].$children.find(
+                        (y) => y.$options._componentTag == "HighlightText"
+                    );
+                    if (h) {
+                        h.$el.innerHTML = getHtml(h.$el.innerHTML);
+                    }
+                });
+        };
+        vue.$options.updated = [changeMessages];
+        changeMessages();
+        initTextAreaAction();
+    }, getElement);
 };
 
-const app = document.getElementById("app").__vue__;
-app.$options.updated = [
-    () => {
-        if (app.$root._route.path.endsWith("chat")) {
-            init();
-        }
-    }
-];
+execAfterCreateElement(
+    (app) => {
+        const vue = app.__vue__;
+        vue.$options.updated = [
+            () => {
+                if (
+                    vue.$root._route.path.endsWith("chat") ||
+                    vue.$root._route.path.endsWith("new")
+                ) {
+                    init(() => document.querySelector("#message-list .v-list"));
+                }
+            }
+        ];
 
-if (app.$root._route.path.endsWith("chat")) {
-    init();
-}
+        if (
+            vue.$root._route.path.endsWith("chat") ||
+            vue.$root._route.path.endsWith("new")
+        ) {
+            init(() => document.querySelector("#message-list .v-list"));
+        }
+    },
+    () => document.getElementById("app")
+);
