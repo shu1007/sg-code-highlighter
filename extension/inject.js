@@ -80,6 +80,11 @@ const init = () => {
     execAfterCreateElement(
         (list) => {
             const vue = list.__vue__;
+            if (vue.checked) {
+                return;
+            }
+            vue.checked = true;
+
             const changeMessages = () => {
                 vue.$children
                     .filter(
@@ -120,6 +125,7 @@ const execInit = (vue) => {
 execAfterCreateElement(
     (app) => {
         const vue = app.__vue__;
+
         vue.$options.updated = [() => execInit(vue)];
         execInit(vue);
     },
