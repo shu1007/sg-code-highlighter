@@ -20,32 +20,33 @@ const getHilightHtml = (code, lang) => {
     )}</div>`;
 };
 
-const getHtml = (original) => {
-    const regex = RegExp("```.*?\n.+?```", "gs");
+const getHtml = (orgHtml, orgText) => {
+    const regexHtml = RegExp("```.*?\n.+?```", "gs");
+    const regexText = RegExp("```.*?\n.+?```", "gs");
     let index = 0;
     let regArray;
     let codeFound = false;
     const strings = [];
-    while ((regArray = regex.exec(original)) !== null) {
+    while ((regArray = regexHtml.exec(orgHtml)) !== null) {
         codeFound = true;
         const startIndex = regArray.index;
         if (index <= startIndex - 1) {
-            strings.push(original.substring(index, startIndex));
+            strings.push(orgHtml.substring(index, startIndex));
         }
-        const foundStr = regArray[0];
+        const foundStr = regexText.exec(orgText)[0];
         const lang = foundStr.match(/\`\`\`(.*?)\n/)[1].toLowerCase();
 
         strings.push(
             getHilightHtml(foundStr.match(/\`\`\`.*?\n(.+?)\`\`\`/s)[1], lang)
         );
-        index = regex.lastIndex;
+        index = regexHtml.lastIndex;
     }
 
-    if (!codeFound) return original;
+    if (!codeFound) return orgHtml;
 
-    const textLength = original.length;
+    const textLength = orgHtml.length;
     if (index < textLength - 1) {
-        strings.push(original.substring(index, textLength));
+        strings.push(orgHtml.substring(index, textLength));
     }
     return strings.join("");
 };
@@ -97,7 +98,10 @@ const init = () => {
                             (y) => y.$options._componentTag == "HighlightText"
                         );
                         if (h) {
-                            h.$el.innerHTML = getHtml(h.$el.innerHTML);
+                            h.$el.innerHTML = getHtml(
+                                h.$el.innerHTML,
+                                h.$el.innerText
+                            );
                         }
                     });
             };
